@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 import java.util.Random;
+import javafx.scene.layout.HBox;
 
 public class GuessMyNumber extends Application {
 
@@ -26,13 +27,15 @@ public class GuessMyNumber extends Application {
         Label state = new Label("");
         TextField input = new TextField();
         Button sendGuess = new Button("Guess");
+        
+        Label lastGuess = new Label("Last guess: ");
 
-        layout.getChildren().addAll(instructions, state, input, sendGuess);
+        layout.getChildren().addAll(instructions, input, state, lastGuess, sendGuess);
         layout.setSpacing(10);
         layout.setPadding(new Insets(10, 10, 10, 10));
         layout.setAlignment(Pos.CENTER);
-
-        playerGuesses(input, sendGuess, state);
+        
+        playerGuesses(input, sendGuess, state, lastGuess);
 
         Scene scene = new Scene(layout);
         stage.setScene(scene);
@@ -46,7 +49,7 @@ public class GuessMyNumber extends Application {
         return r.nextInt(100);
     }
 
-    public void playerGuesses(TextField input, Button button, Label state) {
+    public void playerGuesses(TextField input, Button button, Label state, Label lastGuess) {
         int number = randomNumber();
 
         button.setOnAction(event -> {
@@ -71,6 +74,8 @@ public class GuessMyNumber extends Application {
                             state.setText("Too high!");
                             input.setText("");
                         }
+                        
+                        lastGuess.setText("Last guess: " + Integer.toString(playerGuess));
                     }
                 } catch (NumberFormatException error) {
                     state.setText("Guess a number!");
